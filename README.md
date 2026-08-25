@@ -354,19 +354,6 @@ npm run lint    # run ESLint
 npm run preview # preview the production bundle locally
 ```
 
-## API overview
-
-| Prefix | Responsibility |
-| --- | --- |
-| `/api/auth` | Customer/admin authentication, profiles, verification, password recovery. |
-| `/api/category` | Public category retrieval and admin category management. |
-| `/api/menu` | Public menu retrieval and admin menu management. |
-| `/api/cart` | Authenticated customer cart operations. |
-| `/api/order` | Customer order placement/history and admin fulfilment management. |
-| `/api/booking` | Customer reservations/history and admin reservation management. |
-| `/api/payment` | Customer receipts and admin payment search/confirmation. |
-| `/api/engagement` | Contact messages and newsletter subscriptions. |
-| `/health` | Hosting health check. |
 
 ## Deployment
 
