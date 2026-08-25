@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 import axios from "axios";
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+// Production uses Vercel's same-origin /api proxy so auth cookies remain
+// first-party instead of crossing between vercel.app and onrender.com.
+axios.defaults.baseURL = import.meta.env.DEV ? import.meta.env.VITE_BASE_URL : "";
 axios.defaults.withCredentials = true;
 import { toast } from "sonner";
 const AppContextProvider = ({ children }) => {
@@ -103,7 +105,7 @@ const AppContextProvider = ({ children }) => {
   const isAuth = async () => {
     try {
       const { data } = await axios.get("/api/auth/is-auth");
-      if (data.success) {
+      if (data.success && data.user) {
         setUser(data.user);
         return true;
       }
@@ -125,7 +127,10 @@ const AppContextProvider = ({ children }) => {
   useEffect(() => {
     fetchCategories();
     fetchMenus();
-    Promise.allSettled([isAuth().then((authenticated) => authenticated && fetchCartData()), isAdminAuth()])
+    const authCheck = window.location.pathname.startsWith("/admin")
+      ? isAdminAuth()
+      : isAuth().then((authenticated) => authenticated && fetchCartData());
+    Promise.resolve(authCheck)
       .finally(() => setAuthReady(true));
   }, []);
   const value = {

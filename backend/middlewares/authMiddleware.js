@@ -1,4 +1,16 @@
 import jwt from "jsonwebtoken";
+export const optionalAuth = (req, _res, next) => {
+   const token = req.cookies.token;
+   if (!token) return next();
+   try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded.role === "user" && decoded.id) req.user = decoded;
+      if (decoded.role === "admin" && decoded.email === process.env.ADMIN_EMAIL) req.admin = decoded;
+   } catch {
+      // An absent, expired, or invalid cookie means signed out for session probes.
+   }
+   next();
+};
 export const protect=(req,res,next)=>{
    const token=req.cookies.token;
    if(!token){

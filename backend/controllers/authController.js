@@ -154,17 +154,19 @@ export const getProfile = async (req, res) => {
 
 export const isAuth = async (req, res) => {
   try {
+    if (!req.user) return res.json({ success: true, authenticated: false, user: null });
     const { id } = req.user;
     const user = await User.findById(id).select("-password");
-    res.json({ success: true, user });
+    res.json({ success: true, authenticated: Boolean(user), user });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", success: false });
   }
 };
 
 export const isAdminAuth = async (req, res) => {
+  if (!req.admin) return res.json({ success: true, authenticated: false, admin: null });
   const admin = await getOrCreateAdminProfile();
-  res.json({ success: true, admin });
+  res.json({ success: true, authenticated: true, admin });
 };
 
 export const getAdminProfile = async (_req, res) => {

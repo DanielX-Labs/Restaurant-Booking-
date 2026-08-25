@@ -16,4 +16,10 @@ test("health endpoint and JSON 404 are available without a database", async (t) 
   const missing = await fetch(`http://127.0.0.1:${port}/missing`);
   assert.equal(missing.status, 404);
   assert.equal((await missing.json()).success, false);
+  const userSession = await fetch(`http://127.0.0.1:${port}/api/auth/is-auth`);
+  assert.equal(userSession.status, 200);
+  assert.deepEqual(await userSession.json(), { success: true, authenticated: false, user: null });
+  const adminSession = await fetch(`http://127.0.0.1:${port}/api/auth/admin/is-auth`);
+  assert.equal(adminSession.status, 200);
+  assert.deepEqual(await adminSession.json(), { success: true, authenticated: false, admin: null });
 });

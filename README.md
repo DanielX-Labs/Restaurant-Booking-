@@ -333,7 +333,7 @@ Use the committed `.env.example` files as templates. Never commit actual secrets
 
 | Variable | Purpose |
 | --- | --- |
-| `VITE_BASE_URL` | Express API origin, without a trailing slash. |
+| `VITE_BASE_URL` | Local Vite development API origin. Production uses Vercel's same-origin `/api` proxy. |
 
 ## Available commands
 
@@ -363,7 +363,7 @@ Production configuration is included:
 - `frontend/vercel.json` builds the Vite app and supports client-side route refreshes.
 - `DEPLOYMENT.md` contains step-by-step environment and verification instructions.
 
-For cross-origin authentication, use HTTPS, set `NODE_ENV=production` on Render, set Render's `CLIENT_URL` to the exact Vercel origin, and set Vercel's `VITE_BASE_URL` to the exact Render origin.
+For production authentication, use HTTPS, set `NODE_ENV=production` on Render, set Render's `CLIENT_URL` to the exact Vercel origin, and keep browser API requests on Vercel's same-origin `/api` proxy.
 
 ## Security notes
 

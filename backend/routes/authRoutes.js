@@ -14,7 +14,7 @@ import {
   getAdminProfile,
   updateAdminProfile,
 } from "../controllers/authController.js";
-import { adminOnly, protect } from "../middlewares/authMiddleware.js";
+import { adminOnly, optionalAuth, protect } from "../middlewares/authMiddleware.js";
 import { rateLimit } from "../middlewares/rateLimit.js";
 import upload from "../middlewares/multer.js";
 const authRoutes = express.Router();
@@ -28,9 +28,9 @@ authRoutes.post("/reset-password/:token", authLimiter, resetPassword);
 authRoutes.get("/verify-email/:token", verifyEmail);
 authRoutes.post("/logout", logoutUser);
 authRoutes.get("/profile", protect, getProfile);
-authRoutes.get("/is-auth", protect, isAuth);
+authRoutes.get("/is-auth", optionalAuth, isAuth);
 authRoutes.put("/profile", protect, updateProfile);
-authRoutes.get("/admin/is-auth", adminOnly, isAdminAuth);
+authRoutes.get("/admin/is-auth", optionalAuth, isAdminAuth);
 authRoutes.get("/admin/profile", adminOnly, getAdminProfile);
 authRoutes.put("/admin/profile", adminOnly, upload.single("image"), updateAdminProfile);
 
