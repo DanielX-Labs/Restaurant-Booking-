@@ -1,0 +1,4 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+const ScrollToTop = () => { const { pathname, search, hash } = useLocation(); useEffect(() => { if (pathname.startsWith("/admin")) return; if (hash) { const id = decodeURIComponent(hash.slice(1)); const scroll = () => { const target = document.getElementById(id); if (target) target.scrollIntoView({ behavior: "smooth", block: "start" }); return Boolean(target); }; if (scroll()) return; const observer = new MutationObserver(() => scroll() && observer.disconnect()); observer.observe(document.body, { childList: true, subtree: true }); const timeout = window.setTimeout(() => observer.disconnect(), 5000); return () => { observer.disconnect(); window.clearTimeout(timeout); }; } window.scrollTo({ top: 0, left: 0, behavior: "auto" }); }, [pathname, search, hash]); return null; };
+export default ScrollToTop;
